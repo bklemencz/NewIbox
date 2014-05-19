@@ -27,16 +27,16 @@
     <UncachedRange />
     <BootSegment>0</BootSegment>
     <AsfFrameworkConfig>
-      <framework-data xmlns="">
-        <options />
-        <configurations />
-        <files />
-        <documentation help="" />
-        <offline-documentation help="" />
-        <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.15.0" />
-        </dependencies>
-      </framework-data>
+      <framework-data>
+  <options />
+  <configurations />
+  <files />
+  <documentation help="" />
+  <offline-documentation help="" />
+  <dependencies>
+    <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.6.0" />
+  </dependencies>
+</framework-data>
     </AsfFrameworkConfig>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -59,7 +59,7 @@
             <Value>c:\Program Files (x86)\Arduino\libraries</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>c:\users\t9569bk\Documents\Arduino\libraries</Value>
+            <Value>c:\Users\Balazs\Documents\Arduino\libraries</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\CMSIS\Include\</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\Device\ATMEL\</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\libsam</Value>
@@ -87,7 +87,7 @@
             <Value>c:\Program Files (x86)\Arduino\libraries</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>c:\users\t9569bk\Documents\Arduino\libraries</Value>
+            <Value>c:\Users\Balazs\Documents\Arduino\libraries</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\CMSIS\Include\</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\Device\ATMEL\</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\libsam</Value>
@@ -167,7 +167,7 @@
             <Value>c:\Program Files (x86)\Arduino\libraries</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>c:\users\t9569bk\Documents\Arduino\libraries</Value>
+            <Value>c:\Users\Balazs\Documents\Arduino\libraries</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\CMSIS\Include\</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\Device\ATMEL\</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\libsam</Value>
@@ -195,7 +195,7 @@
             <Value>c:\Program Files (x86)\Arduino\libraries</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\libraries</Value>
             <Value>C:\Program Files (x86)\Visual Micro\Visual Micro for Arduino\Micro Platforms\default\debuggers</Value>
-            <Value>c:\users\t9569bk\Documents\Arduino\libraries</Value>
+            <Value>c:\Users\Balazs\Documents\Arduino\libraries</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\CMSIS\Include\</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\CMSIS\Device\ATMEL\</Value>
             <Value>c:\Program Files (x86)\Arduino\hardware\arduino\sam\system\libsam</Value>
