@@ -39,7 +39,7 @@ void loop()
 				IsCanInit = true;
 				ActualVariable = 0;	
 			} else
-				SerialSendError(" Unable to enter Extended Diagnostic Mode: "); //Send error message on the serial bus
+				SerialSendError("Unable to enter Extended Diagnostic Mode: "); //Send error message on the serial bus
 		} else
 			SerialSendError("Unable to open CAN Bus: ");						//Send error message to the serial bus
 	} else
