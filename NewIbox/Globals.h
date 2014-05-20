@@ -4,7 +4,13 @@
  * Created: 5/14/2014 1:26:51 PM
  *  Author: T9569BK
  */ 
-
+#include <SPI.h>
+#include <EthernetUdp.h>
+#include <EthernetServer.h>
+#include <EthernetClient.h>
+#include <Ethernet.h>
+#include <Dns.h>
+#include <Dhcp.h>
 
 #ifndef GLOBALS_H_
 
@@ -49,6 +55,12 @@ union MemAddress_t
 PageItems_t Pageitems[24];
 int PageItemsCount;
 String LastError;
+
+//////////////////////////////////////////////////////////////////////////
+////// ETHERNET VARIABLES
+//////////////////////////////////////////////////////////////////////////
+EthernetServer server(80);
+
 
 //////////////////////////////////////////////////////////////////////////
 //// SERIAL COMMUNICATION GLOBAL VARIABLES

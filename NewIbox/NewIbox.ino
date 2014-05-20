@@ -1,3 +1,10 @@
+#include <SPI.h>
+#include <EthernetUdp.h>
+#include <EthernetServer.h>
+#include <EthernetClient.h>
+#include <Ethernet.h>
+#include <Dns.h>
+#include <Dhcp.h>
 #include <sn65hvd234.h>
 #include <due_can.h>
 #include "Globals.h"
@@ -86,6 +93,7 @@ if (SerialStreamingOn && IsCanInit)											//if we already init everything an
 	if (!SerialStreamingOn && IsCanInit)										//if serial streaming was shut down we shut down the can line too.
 	{
 		CAN.disable();
+		IsCanInit = false;
 #pragma endregion Serial Streaming To End Turn Off the CAN
 	}
 	
@@ -93,7 +101,7 @@ if (SerialStreamingOn && IsCanInit)											//if we already init everything an
 if ((millis()%50) == 0)
 	{
 		GetSerialLine();	
-		if (SerialLastLine.Ready)
+		if (SerialLastLine.Ready && (SerialLastLine.Line.startsWith("/")))
 		{
 			SerialIncomingLineSplit(SerialLastLine.Line);
 			SerialParseCommand();
