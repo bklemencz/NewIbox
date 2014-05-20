@@ -1,0 +1,8 @@
+NewIbox\Debug*/
+
+*.o
+NewIbox\Debug*/
+NewIbox/Debug/NewIbox.bin
+*.map
+*.elf
+NewIbox/Debug/core.a
