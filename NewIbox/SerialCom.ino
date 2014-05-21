@@ -1,3 +1,4 @@
+#include "WString.h"
 
 Bool InitVariables()
 {
@@ -8,6 +9,7 @@ Bool InitVariables()
 	SerialLastLine.Line = "";
 	SerialLastLine.Ready =false;
 	PageComing =false;
+	TryCount = 0;
 }
 
 /**
@@ -73,7 +75,9 @@ bool SerialIncomingLineSplit(String IncomingLine)
 			
 	} else
 	{
-		LastError = "Not A Valid Incoming Serial Command!";
+		Serial.print("/ERROR/");
+		Serial.println(IncomingLine);
+		LastError = "Not A Valid Incoming Command!";
 		SerialClearItems();
 		SerialClearLine();
 		return false;
@@ -129,6 +133,8 @@ void SerialSendError(String ErrorMessage)
 	Serial.print("/ERROR/");
 	Serial.print(ErrorMessage);
 	Serial.println(LastError);
+	ErrorMessage = "";
+	LastError = "";
 }
 
 bool SerialSendStatus()

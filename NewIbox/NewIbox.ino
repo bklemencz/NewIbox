@@ -35,7 +35,7 @@ void loop()
 	
 #pragma region Serial Streaming to begin turn on the CAN
 
-	if (SerialStreamingOn && !IsCanInit)										//if the streaming command came but CAN not init yet
+	if (SerialStreamingOn && !IsCanInit && (TryCount<MAX_TRY_COUNT))			//if the streaming command came but CAN not init yet
 	{
 		if (InitCanBus())														// Init Can bus at 500K
 		{
@@ -45,10 +45,21 @@ void loop()
 			{
 				IsCanInit = true;
 				ActualVariable = 0;	
+				TryCount = 0;
 			} else
+			{
 				SerialSendError("Unable to enter Extended Diagnostic Mode: "); //Send error message on the serial bus
+				TryCount++;
+				if (TryCount == MAX_TRY_COUNT)
+				{
+					SerialSendError("Maximum number of retries reached. Please check vehicle connection, Disconnect and Reconnect!");
+				}
+			}
 		} else
+		{
 			SerialSendError("Unable to open CAN Bus: ");						//Send error message to the serial bus
+			TryCount++;
+		}
 	} else
 #pragma endregion Serial Streaming to begin turn on the CAN
 //Else
@@ -101,7 +112,7 @@ if (SerialStreamingOn && IsCanInit)											//if we already init everything an
 if ((millis()%50) == 0)
 	{
 		GetSerialLine();	
-		if (SerialLastLine.Ready && (SerialLastLine.Line.startsWith("/")))
+		if (SerialLastLine.Ready) // && (SerialLastLine.Line.startsWith("/")))
 		{
 			SerialIncomingLineSplit(SerialLastLine.Line);
 			SerialParseCommand();

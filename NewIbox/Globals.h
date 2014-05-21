@@ -18,8 +18,9 @@
 //// CONSTANT DEFINITIONS
 //////////////////////////////////////////////////////////////////////////
 
-const int CAN_TIMEOUT_MS = 1000;
+const int CAN_TIMEOUT_MS = 500;
 const String APPL_VER = "V0.2";
+const int MAX_TRY_COUNT = 5;
 
 //////////////////////////////////////////////////////////////////////////
 /// STUCTURE DEFINITIONS
@@ -84,6 +85,7 @@ Bool IsCANExtFrame;
 Bool KeepCANPolling,IsCanInit;
 Bool WaitingForResponse,TurnDone;
 int ActualVariable;
+int TryCount;
 
 
 
