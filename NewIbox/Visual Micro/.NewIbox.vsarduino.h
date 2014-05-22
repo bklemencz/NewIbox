@@ -43,6 +43,16 @@ void SerialSendError(String ErrorMessage);
 bool SerialSendStatus();
 void SerialSendPageStatus();
 bool SerialParseCommand();
+Bool GetTCPLine();
+void TCPClearItems();
+void TCPClearLine();
+bool TCPSendVersion();
+bool TCPSendOK();
+void TCPSendError(String ErrorMessage);
+void TCPSendPageStatus();
+bool TCPSendStatus();
+bool TCPParseCommand();
+bool TCPIncomingLineSplit(String IncomingLine);
 
 #include "c:\Program Files (x86)\Arduino\hardware\arduino\sam\variants\arduino_due_x\pins_arduino.h" 
 #include "c:\Program Files (x86)\Arduino\hardware\arduino\sam\variants\arduino_due_x\variant.h" 
@@ -51,3 +61,4 @@ bool SerialParseCommand();
 #include "C:\Users\t9569bk\Documents\Atmel Studio\6.2\NewIbox\NewIbox\CanComm.ino"
 #include "C:\Users\t9569bk\Documents\Atmel Studio\6.2\NewIbox\NewIbox\Globals.h"
 #include "C:\Users\t9569bk\Documents\Atmel Studio\6.2\NewIbox\NewIbox\SerialCom.ino"
+#include "C:\Users\t9569bk\Documents\Atmel Studio\6.2\NewIbox\NewIbox\TCPComm.ino"

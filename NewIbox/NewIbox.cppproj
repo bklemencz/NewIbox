@@ -292,6 +292,9 @@
     <None Include="SerialCom.ino">
       <SubType>compile</SubType>
     </None>
+    <None Include="TCPComm.ino">
+      <SubType>compile</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

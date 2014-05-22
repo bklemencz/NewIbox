@@ -22,6 +22,7 @@ void setup()
 {
 	  InitVariables();
 	  InitSerial();
+	  Ethernet.begin(mac, serverIP);
 	  CanReqestID = 0x18DAF110;
 	  CanResopnseID = 0x18DA10F1;
 	  IsCANExtFrame = true;
@@ -31,8 +32,81 @@ void setup()
 
 void loop()
 {
+ client = server.available();
+  
+#pragma region TCP Routines If Connected
+if (client.connected())																	// if a client is connected 
+ {
+	 //////////////////////////////////////////////////////////////////////////
+	 /// TCP Streaming just turned on, need to init CAN 
+	 //////////////////////////////////////////////////////////////////////////
+	 
+
+if(TCPStreamingOn && !IsCanInit && (TryCount<MAX_TRY_COUNT))
+	 {
+		 if (InitCanBus())														// Init Can bus at 500K
+		 {
+			 SetAllCanFilters();													//Set filters on CAN
+			 
+			 if (SetCANExtendedDiagMode())										// Start extended diagnostic session
+			 {
+				 IsCanInit = true;
+				 ActualVariable = 0;
+				 TryCount = 0;
+			 } else
+			 {
+				 TCPSendError("Unable to enter Extended Diagnostic Mode: "); //Send error message on the serial bus
+				 TryCount++;
+				 if (TryCount == MAX_TRY_COUNT)
+				 {
+					 TCPSendError("Maximum number of retries reached. Please check vehicle connection, Disconnect and Reconnect!");
+				 }
+			 }
+		 } else
+		 {
+			 TCPSendError("Unable to open CAN Bus: ");						//Send error message to the serial bus
+			 TryCount++;
+		 }	 
+	 } else
+
+	 //////////////////////////////////////////////////////////////////////////
+	 /// TCP Streaming ON
+	 //////////////////////////////////////////////////////////////////////////
+	 
+
+if (TCPStreamingOn && IsCanInit)
+	 {
+		 
+	 } else
+	 
+
+	 //////////////////////////////////////////////////////////////////////////
+	 /// TO STOP TCP STREAMING and Turn Off CAN bus
+	 //////////////////////////////////////////////////////////////////////////
+	 
+	 if (!TCPStreamingOn && IsCanInit)
+	 {
+		 CAN.disable();
+		 IsCanInit = false;
+	 }
+	 
+	 //////////////////////////////////////////////////////////////////////////
+	 /// EVERY 50ms Check For Incoming TCP command
+	 //////////////////////////////////////////////////////////////////////////
 	
+	if ((millis()%50) == 0)
+	 {
+		 GetTCPLine();
+		 if (TCPLastLine.Ready)
+		 {
+			 TCPIncomingLineSplit(TCPLastLine.Line);
+			 TCPParseCommand();
+		 }
+	 }					// End of TCP incoming command check
+ }						// End of TCP Client connected
+#pragma endregion TCP Routines If Connected
 	
+#pragma region Serial Routines
 #pragma region Serial Streaming to begin turn on the CAN
 
 	if (SerialStreamingOn && !IsCanInit && (TryCount<MAX_TRY_COUNT))			//if the streaming command came but CAN not init yet
@@ -119,4 +193,5 @@ if ((millis()%50) == 0)
 		}
 	} 
 #pragma endregion Every 50ms poll the serial line for new commands	
+#pragma endregion Serial Routines
 }
