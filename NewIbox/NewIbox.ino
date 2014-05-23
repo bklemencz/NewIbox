@@ -23,8 +23,10 @@ void setup()
 	  InitVariables();
 	  InitSerial();
 	  Ethernet.begin(mac, serverIP);
-	  CanReqestID = 0x18DAF110;
-	  CanResopnseID = 0x18DA10F1;
+	  server.begin();
+	  SPI.setClockDivider(10, 8);
+	  CanReqestID = 0x18DA10F1;
+	  CanResopnseID = 0x18DAF110;
 	  IsCANExtFrame = true;
 	  
 
@@ -35,14 +37,14 @@ void loop()
  client = server.available();
   
 #pragma region TCP Routines If Connected
-if (client.connected())																	// if a client is connected 
+while (client.connected())																	// if a client is connected 
  {
 	 //////////////////////////////////////////////////////////////////////////
 	 /// TCP Streaming just turned on, need to init CAN 
 	 //////////////////////////////////////////////////////////////////////////
 	 
 
-if(TCPStreamingOn && !IsCanInit && (TryCount<MAX_TRY_COUNT))
+	 if(TCPStreamingOn && !IsCanInit && (TryCount<MAX_TRY_COUNT))
 	 {
 		 if (InitCanBus())														// Init Can bus at 500K
 		 {
@@ -55,15 +57,19 @@ if(TCPStreamingOn && !IsCanInit && (TryCount<MAX_TRY_COUNT))
 				 TryCount = 0;
 			 } else
 			 {
+				 LastError = "Timeout!";
 				 TCPSendError("Unable to enter Extended Diagnostic Mode: "); //Send error message on the serial bus
 				 TryCount++;
 				 if (TryCount == MAX_TRY_COUNT)
 				 {
+					 LastError = "Timeout!";
 					 TCPSendError("Maximum number of retries reached. Please check vehicle connection, Disconnect and Reconnect!");
+					 TCPSendError("");
 				 }
 			 }
 		 } else
 		 {
+			 LastError = "CAN SYNC Error!";
 			 TCPSendError("Unable to open CAN Bus: ");						//Send error message to the serial bus
 			 TryCount++;
 		 }	 
@@ -74,7 +80,7 @@ if(TCPStreamingOn && !IsCanInit && (TryCount<MAX_TRY_COUNT))
 	 //////////////////////////////////////////////////////////////////////////
 	 
 
-if (TCPStreamingOn && IsCanInit)
+	 if (TCPStreamingOn && IsCanInit && !TCPCommandPause)
 	 {
 		 
 	 } else
@@ -94,8 +100,19 @@ if (TCPStreamingOn && IsCanInit)
 	 /// EVERY 50ms Check For Incoming TCP command
 	 //////////////////////////////////////////////////////////////////////////
 	
-	if ((millis()%50) == 0)
+	if (client.available())
 	 {
+		 if (TCPLastLine.Line == "")
+		 {
+			 char LastRead = client.read();
+			 TCPLastLine.Line += LastRead;
+			 TCPLastLine.Ready = false;
+			 if (LastRead == '/')
+			 {
+				 TCPCommandPause = true;
+			 }
+		 }
+		 
 		 GetTCPLine();
 		 if (TCPLastLine.Ready)
 		 {
@@ -148,6 +165,7 @@ if (SerialStreamingOn && IsCanInit)											//if we already init everything an
 		if ((LastRawRes = GetRawResponseByAddress()) != -1)					//if there is a pending request check if we have the response
 		{
 			LastReadValues[ActualVariable] = GetValueFromRawResponse(LastRawRes,ActualVariable);
+			WaitingForResponse = false;
 			if (ActualVariable < (PageItemsCount-1))
 			{
 				ActualVariable++;

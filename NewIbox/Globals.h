@@ -63,6 +63,7 @@ String LastError;
 byte mac[] = { 0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress serverIP(192,168,0,50);
 int serverPort=1000;
+String TCPNewLine = "\r\n";
 
 EthernetServer server(serverPort);
 EthernetClient client;
@@ -70,7 +71,7 @@ SerialReadLine_t TCPLastLine;
 String TCPLastLineItems[20];
 String TCPToSendLine;
 int TCPLastLineItemsCount;
-bool TCPStreamingOn;
+bool TCPStreamingOn,TCPCommandPause;
 
 
 //////////////////////////////////////////////////////////////////////////

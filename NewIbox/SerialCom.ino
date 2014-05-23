@@ -10,6 +10,7 @@ Bool InitVariables()
 	SerialLastLine.Ready =false;
 	PageComing =false;
 	TryCount = 0;
+	TCPCommandPause = false;
 }
 
 /**

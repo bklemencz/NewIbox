@@ -41,20 +41,26 @@ bool TCPSendVersion()
 	String OutLine;
 	OutLine = "/VER/BKBOX/";
 	OutLine += APPL_VER;
-	client.println(OutLine);
+	OutLine += TCPNewLine;
+	client.print(OutLine);
 	PageComing = false;
 }
 
 bool TCPSendOK()
 {
-	client.println("/OK");
+	delay(1);
+	String outline;
+	outline = "/OK" + TCPNewLine;
+	client.print(outline);
 }
 
 void TCPSendError(String ErrorMessage)
 {
-	client.print("/ERROR/");
-	client.print(ErrorMessage);
-	client.println(LastError);
+	delay(1);
+	String outline;
+	outline = "/ERROR/";
+	outline = outline + ErrorMessage + LastError + TCPNewLine;
+	client.print(outline);
 	ErrorMessage = "";
 	LastError = "";
 }
@@ -90,12 +96,15 @@ bool TCPParseCommand()
 	if (TCPLastLineItems[0] == "VER")
 	{
 		TCPSendVersion();
+		TCPCommandPause = false;
 		
 	} else
 	if (TCPLastLineItems[0] == "PAGE")
 	{
 		PageItemsCount = atoi(TCPLastLineItems[1].c_str());
 		PageComing = true;
+		TCPStreamingOn = false;
+		TCPCommandPause = false;
 		PageComingNr = 0;
 		TCPSendOK();
 	} else
@@ -105,20 +114,24 @@ bool TCPParseCommand()
 		KeepCANPolling = true;
 		PageComing = false;
 		TCPSendOK();
+		TCPCommandPause = false;
 	} else
 	if (TCPLastLineItems[0] == "STATUS")
 	{
 		PageComing = false;
 		TCPSendStatus();
+		TCPCommandPause = false;
 	} else
 	if (TCPLastLineItems[0] == "PAGESTATUS")
 	{
 		PageComing = false;
 		TCPSendPageStatus();
+		TCPCommandPause = false;
 	} else
 	if (TCPLastLineItems[0] == "DISCONNECT")
 	{
 		TCPStreamingOn = false;
+		TCPCommandPause = false;
 		KeepCANPolling = false;
 		PageComing = false;
 		InitVariables();
@@ -135,7 +148,11 @@ bool TCPParseCommand()
 		TCPSendOK();
 		PageComingNr++;
 		if (PageComingNr > PageItemsCount)
-		PageComing = false;
+		{
+			TCPCommandPause = false;
+			PageComing = false;
+		}
+		
 	}
 }
 
@@ -146,6 +163,8 @@ bool TCPIncomingLineSplit(String IncomingLine)
 	if (IncomingLine.startsWith("/"))
 	{
 		IncomingLine.remove(0,1);
+		IncomingLine.replace("\r","");
+		IncomingLine.replace("\n","");
 		
 	} else
 	{
@@ -167,6 +186,7 @@ bool TCPIncomingLineSplit(String IncomingLine)
 			TCPLastLineItemsCount++;
 		}
 	}
+	//client.println(TCPLastLineItems[0]);
 	TCPClearLine();
 	return true;
 	
